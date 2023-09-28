@@ -1,9 +1,9 @@
 import { test, expect } from "@playwright/test";
 test.describe("Bai tap so 3", () => {
-    test.describe.configure({ mode: 'parallel' });
-    test.beforeAll("Sign in", async ({ page }) => {
+    //test.describe.configure({ mode: 'parallel' });
+    test.beforeEach("Sign in", async ({ page }) => {
         // Step: login vao shop
-        await test.step("truy cap vao trang web", async () => {
+        await test.step("truy cap vao trang web", async() => {
             await page.goto("https://accounts.shopbase.com/sign-in")
         })   
         await test.step("Sign in",async () => {    
@@ -18,12 +18,12 @@ test.describe("Bai tap so 3", () => {
             await page.waitForTimeout(5000)
             const popup = page.locator("//div[contains(@class,'onboarding-popup')]")
             if (await popup.isVisible()) {  // dong cai quang cao pop up 
-                const clickX = page.locator("//div[@class='button-close']")
-                await clickX.click()
+                  page.locator("//*[@id='app']/div/div[1]/div[3]/span/i").click()
+                    // await clickX.click()
             }
-            await page.waitForTimeout(5000)
-            const tittle = page.locator("//div[@class='heading']")
-            await expect(tittle).toBeVisible()
+            //await page.waitForTimeout(5000)
+            const tittle = page.locator("//h2[contains(normalize-space(),'Good Evening, Pham')]")
+             await expect(tittle).toBeVisible()
         })
         // await test.step("Sign in",async () => {
         //     const fillThisEmail = page.locator("//input[contains(@placeholder,'example@email.com')]")
