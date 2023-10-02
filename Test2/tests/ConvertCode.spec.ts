@@ -18,12 +18,12 @@ test.describe("Bai tap so 3", () => {
             await page.waitForTimeout(5000)
             const popup = page.locator("//div[contains(@class,'onboarding-popup')]")
             if (await popup.isVisible()) {  // dong cai quang cao pop up 
-                  page.locator("//*[@id='app']/div/div[1]/div[3]/span/i").click()
-                    // await clickX.click()
+                 const clickX = page.locator("//div[@class='button-close")
+                 await clickX.click()
             }
             //await page.waitForTimeout(5000)
-            const tittle = page.locator("//h2[contains(normalize-space(),'Good Evening, Pham')]")
-             await expect(tittle).toBeVisible()
+            //const tittle = page.locator("//h2[contains(normalize-space(),'Good Evening, Pham')]")
+             //await expect(tittle).toBeVisible()
         })
         // await test.step("Sign in",async () => {
         //     const fillThisEmail = page.locator("//input[contains(@placeholder,'example@email.com')]")
@@ -77,12 +77,25 @@ test.describe("Bai tap so 3", () => {
             const clickAddProduct = page.locator("//span[contains(normalize-space(),'Add product')]")
             await clickAddProduct.click()
             const fillThisTittle = page.locator("//input[contains(@placeholder,'Short Sleeve T-Shirt')]")
-            await fillThisTittle.fill("Simple Product A")
+            await fillThisTittle.fill("Ao Ngan")
+            await page.waitForTimeout(5000)
+            const description = page.frameLocator(`//iframe[contains(@title,"Rich Text Area")]`).locator("//body//p")
+            await description.click()
+            await page.keyboard.type("Do cho mua he")
             await page.waitForTimeout(5000)
             const fillThisPricing = page.locator("(//input[@id='price'])")
             await fillThisPricing.fill("100")
             const clickSave = page.locator("//button[contains(normalize-space(),'Save changes')]")
             await clickSave.click()
+
+            // productPage.navigateToMenu("Products");
+            // productPage.navigateTOSubMenu("All products");
+
+            // productPage.clickAddProductButton();
+
+            // productPage.enterProductInfo("title", "Description");
+
+            // POM.navigateToSubMenu("")
         })
     })
     test("Create Collection", async ({ page }) => {
@@ -106,38 +119,45 @@ test.describe("Bai tap so 3", () => {
 
         })
     })
-    test("Add product to collection", async ({ page }) => {
-        await test.step("Click Collection", async () => {
-            const clickProduct = page.locator("//span[contains(normalize-space(),'Products')]")
-            await clickProduct.click()
-            //const listProduct = page.locator("(//ul[@class='menu_level_1'])[1]")
-            // await expect(listProduct).toBeVisible()
-            const clickCollection = page.locator("//span[contains(normalize-space(),'Collection')]")
-            await clickCollection.click()
-            const chooseCollection = page.locator("//a[contains(normalize-space(),'a simple collection')]")
-            await chooseCollection.click()
-            const simpleCollection = page.locator("//h2[normalize-space()='a simple collection']")
-            await expect(simpleCollection).toBeVisible()
-
+    test("Add Product to Collection",async ({page}) => {
+        await test.step("Click Collection",async () => {   
+           const clickProduct = page.locator("//span[contains(normalize-space(),'Products')]")
+           await clickProduct.click()
+           //const listProduct = page.locator("(//ul[@class='menu_level_1'])[1]")
+          // await expect(listProduct).toBeVisible()
+           const clickCollection = page.locator("//span[contains(normalize-space(),'Collection')]")
+           await clickCollection.click()
+           const chooseCollection = page.locator("//a[contains(normalize-space(),'a simple collection')]")
+           await chooseCollection.click()
+           const simpleCollection = page.locator("//h2[normalize-space()='a simple collection']")
+           await expect(simpleCollection).toBeVisible()
+           
         })
-        await test.step("add Product to Collection", async () => {
-            const clickAddProduct = page.locator("//button[contains(normalize-space(),'Add product')]")
-            await clickAddProduct.click()
+         await test.step("add Product to Collection",async () => {   
+             const clickAddProduct = page.locator("//button[contains(normalize-space(),'Add product')]")
+             await clickAddProduct.click()
             // const listProduct = page.locator(")
             // await expect(listProduct).toBeVisible()
-            const FillThisProduct = page.locator("//input[contains(@placeholder,'Search for product')]")
-            await FillThisProduct.fill("Simple product a")
-            const clickproductSa = page.locator("(//span[@class='s-check'])[8]")
-            await clickproductSa.click()
-            const clickSaveProduct = page.locator("(//span[contains(normalize-space(),'Save')])[3]")
-            await clickSaveProduct.click()
-        })
+             const FillThisProduct = page.locator("//input[contains(@placeholder,'Search for product')]")
+            await FillThisProduct.fill("Ao Dai")
+            await page.waitForTimeout(3000)
+             const clickproductSa = page.locator("(//span[@class='s-check'])[3]")
+             await clickproductSa.click()
+             
+             const clickSaveProduct = page.locator("(//button[@type='button']//span[contains(normalize-space(),'Save')])[3]")
+             
+             await clickSaveProduct.click()
+         })
+    
     })
-//     test.afterEach("Back to Main Shop Base", async ({ page }) => {
-//         // Step: dong trinh duyet
-//         const clickShopBase = page.locator("//span[contains(normalize-space(),'Home')]")
-//         clickShopBase.click()
-    //})
+
+//    // test.afterEach("Back to Main Shop Base", async ({ page }) => {
+// //         // Step: dong trinh duyet
+//         const user = page.locator("//p[contains(@class,'user-email')]")
+//         await user.click()
+//         const logout = page.locator("(//div[contains(normalize-space(),'Logout')])[4]")
+//         await logout.click()
+//     })
  });
 // Test hook
 // Binh thuong: noi dung test

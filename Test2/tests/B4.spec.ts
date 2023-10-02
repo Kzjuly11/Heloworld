@@ -12,6 +12,7 @@ test("Add Product to Collection",async ({page}) => {
         await fillThisPassword.fill("Khang147852@")
         const clickSignIn = page.locator("//button[contains(normalize-space(),'Sign in')]")
         await clickSignIn.click()
+        await page.waitForLoadState("networkidle")
         await page.waitForTimeout(5000)
         const popUP = page.locator("//div[contains(@class,'onboarding-popup')]")
         if(await popUP.isVisible()){  // dong cai quang cao pop up 
@@ -41,10 +42,12 @@ test("Add Product to Collection",async ({page}) => {
         // const listProduct = page.locator(")
         // await expect(listProduct).toBeVisible()
          const FillThisProduct = page.locator("//input[contains(@placeholder,'Search for product')]")
-        await FillThisProduct.fill("Simple product a")
-         const clickproductSa = page.locator("(//span[@class='s-check'])[8]")
+        await FillThisProduct.fill("Ao Dai")
+         const clickproductSa = page.locator("(//span[@class='s-check'])[9]")
          await clickproductSa.click()
-         const clickSaveProduct = page.locator("(//span[contains(normalize-space(),'Save')])[3]")
+         await page.waitForTimeout(5000)
+         const clickSaveProduct = page.locator("(//button[@type='button']//span[contains(normalize-space(),'Save')])[3]")
+         
          await clickSaveProduct.click()
      })
 
