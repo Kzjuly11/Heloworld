@@ -22,9 +22,7 @@ test.describe("Navigate to menu", () => {
             await page.waitForTimeout(5000)
             productPage.clickPopUp("onboarding-popup")
 
-
-
-            await page.waitForTimeout(4 * 1000);
+           await page.waitForTimeout(4 * 1000);
         });
     })
 

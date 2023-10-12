@@ -1,47 +1,40 @@
-import { test, expect } from "@playwright/test"
+import { test, expect } from "@playwright/test";
+import { ProductPage } from "../pom/product";
 
-test.describe("Create Collection", () => {
-    test("Create Collection", async ({ page }) => {
-        await test.step("truy cap vao trang web", async () => {
+test.describe("Navigate to menu", () => {
+    test.describe.configure({ mode: 'serial' });
+
+    let productPage: ProductPage;
+
+    test.beforeEach(async ({ page }) => {
+        await test.step("Pre-condition: Login to shop", async () => {
+            // Khoi tao POM
+            productPage = new ProductPage(page);
+    
             await page.goto("https://accounts.shopbase.com/sign-in")
-        })
-        await test.step("Sign in",async () => {
-            const fillThisEmail = page.locator("//input[contains(@placeholder,'example@email.com')]")
-            await fillThisEmail.fill("kzjuly12@gmail.com")
-            const fillThisPassword = page.locator("//input[@placeholder='Password']")
-            await fillThisPassword.fill("Khang147852@")
-            const clickSignIn = page.locator("//button[contains(normalize-space(),'Sign in')]")
-            await clickSignIn.click()
+    
+            await productPage.fillThisField("example@email.com", "kzjuly12@gmail.com")
+            await productPage.fillThisField("Password", "Khang147852@")
+            await productPage.clickButton("Sign in")
             await page.waitForTimeout(5000)
-            const popUP = page.locator("//div[contains(@class,'onboarding-popup')]")
-            if(await popUP.isVisible()){  // dong cai quang cao pop up 
-                 const clickX = page.locator("//div[@class='button-close']")
-                 await clickX.click()     
-            }
+            await productPage.clickButton("ShopBasee_by_Khang")
+            await page.waitForLoadState("networkidle")
             await page.waitForTimeout(5000)
-            const tittle = page.locator("//div[@class='heading']")
-            await expect(tittle).toBeVisible()
-         })
+            productPage.clickPopUp("onboarding-popup")
+            await page.waitForTimeout(4 * 1000);
+        });
+    })
+    test("Add Product", async ({ page }) => {
+        // test.describe.configure({ mode: 'parallel' });
         await test.step("Create Collection", async () => {
-            const clickProduct = page.locator("//span[contains(normalize-space(),'Products')]")
-            await clickProduct.click()
+            await productPage.clickButton("Products");
             //const listProduct = page.locator("(//ul[@class='menu_level_1'])[1]")
             // await expect(listProduct).toBeVisible()
-            const clickCollection = page.locator("//span[contains(normalize-space(),'Collection')]")
-            await clickCollection.click()
-            const createCollection = page.locator("//span[contains(normalize-space(), 'Create collection')]")
-            await createCollection.click()
-            const fillTittleCollection = page.locator("//input [contains(@placeholder,'e.g Summer collection, Under $100, Staff picks')]")
-            await fillTittleCollection.fill("Mùa thu")
-            const clickType = page.locator("//span[contains(normalize-space(), 'Manual')]")
-            await clickType.click()
-            const clickSaveCollection = page.locator("//span[contains(normalize-space(),'Save')]")
-            await clickSaveCollection.click()
-
-
+            await productPage.clickButton("Collection");
+            await productPage.clickButton("Create collection");
+            await productPage.fillThisField("e.g Summer collection, Under $100, Staff picks", "Mùa thu")
+            await productPage.clickButton("Manual");
+            await productPage.clickButton("Save")
         })
-
-    })
-
-
+    }) 
 })

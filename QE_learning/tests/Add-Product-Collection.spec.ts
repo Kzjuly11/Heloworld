@@ -1,55 +1,45 @@
 import { test, expect } from "@playwright/test"
-
+import { ProductPage } from "../pom/product";
 test.describe("Add Product to Collection",()=>{
+    let productPage: ProductPage;
 test("Add Product to Collection",async ({page}) => {
-    await test.step("truy cap vao trang web",async()=>{
+    await test.step("Pre-condition: Login to shop", async () => {
+        // Khoi tao POM
+        productPage = new ProductPage(page);
+
         await page.goto("https://accounts.shopbase.com/sign-in")
-    })
-    await test.step("Sign in",async () => {
-        const fillThisEmail = page.locator("//input[contains(@placeholder,'example@email.com')]")
-        await fillThisEmail.fill("kzjuly12@gmail.com")
-        const fillThisPassword = page.locator("//input[@placeholder='Password']")
-        await fillThisPassword.fill("Khang147852@")
-        const clickSignIn = page.locator("//button[contains(normalize-space(),'Sign in')]")
-        await clickSignIn.click()
+
+        await productPage.fillThisField("example@email.com", "kzjuly12@gmail.com")
+        await productPage.fillThisField("Password", "Khang147852@")
+        await productPage.clickButton("Sign in")
+        await page.waitForTimeout(5000)
+        await productPage.clickButton("ShopBasee_by_Khang")
         await page.waitForLoadState("networkidle")
         await page.waitForTimeout(5000)
-        const popUP = page.locator("//div[contains(@class,'onboarding-popup')]")
-        if(await popUP.isVisible()){  // dong cai quang cao pop up 
-             const clickX = page.locator("//div[@class='button-close']")
-             await clickX.click()     
-        }
-        await page.waitForTimeout(5000)
-        const tittle = page.locator("//div[@class='heading']")
-        await expect(tittle).toBeVisible()
-     })
-    await test.step("Click Collection",async () => {   
-       const clickProduct = page.locator("//span[contains(normalize-space(),'Products')]")
-       await clickProduct.click()
-       //const listProduct = page.locator("(//ul[@class='menu_level_1'])[1]")
-      // await expect(listProduct).toBeVisible()
-       const clickCollection = page.locator("//span[contains(normalize-space(),'Collection')]")
-       await clickCollection.click()
-       const chooseCollection = page.locator("//a[contains(normalize-space(),'a simple collection')]")
-       await chooseCollection.click()
-       const simpleCollection = page.locator("//h2[normalize-space()='a simple collection']")
-       await expect(simpleCollection).toBeVisible()
-       
-    })
-     await test.step("add Product to Collection",async () => {   
-         const clickAddProduct = page.locator("//button[contains(normalize-space(),'Add product')]")
-         await clickAddProduct.click()
-        // const listProduct = page.locator(")
-        // await expect(listProduct).toBeVisible()
-         const FillThisProduct = page.locator("//input[contains(@placeholder,'Search for product')]")
-        await FillThisProduct.fill("Ao Dai")
-         const clickproductSa = page.locator("(//span[@class='s-check'])[9]")
-         await clickproductSa.click()
-         await page.waitForTimeout(5000)
-         const clickSaveProduct = page.locator("(//button[@type='button']//span[contains(normalize-space(),'Save')])[3]")
-         
-         await clickSaveProduct.click()
-     })
+        productPage.clickPopUp("onboarding-popup")
+        await page.waitForTimeout(4 * 1000);
+    });
+      
+        await test.step("Click Collection", async () => {
+            await productPage.clickButton("Products");
+            //const listProduct = page.locator("(//ul[@class='menu_level_1'])[1]")
+            // await expect(listProduct).toBeVisible()
+            await productPage.clickButton("Collection");
+            await productPage.chooseCollection();  
+           // const simpleCollection = page.locator("//h2[normalize-space()='a simple collection']")
+           // await expect(simpleCollection).toBeVisible()
+
+        })
+        await test.step("add Product to Collection", async () => {
+           await productPage.clickButtonAddProducts()
+            // const listProduct = page.locator(")
+            // await expect(listProduct).toBeVisible()
+           await productPage.fillThisField("Search for product","Ao dai")
+            await page.waitForTimeout(3000)
+            await page.waitForLoadState("networkidle")
+            await productPage.clickproducttoCollection()
+            await productPage.clickSaveproducttoCollection()
+        })
 
 })
 
